@@ -60,8 +60,11 @@
 
         // Add X axis
         svg.append("g")
-            .attr("transform", `translate(0, ${height})`)
-            .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+            .attr("transform", `translate(0, ${height})`, "rotate(-45")
+            .call(d3.axisBottom(xScale).tickFormat(d3.format("d")))
+            .selectAll("text")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
 
         // Add Y axis
         svg.append("g")
