@@ -1,3 +1,9 @@
+# Final Project
+
+## Github Page Link
+
+https://poondaedalin.github.io/CPSC6030-final-project/
+
 ### 1. **Visualization 1: Detailed Scatter Plot**
 
 **Attributes Involved**:
