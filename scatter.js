@@ -2,11 +2,11 @@ function updateScatter(data) {
     // Clear existing content
     d3.select("#chart").selectAll("*").remove();
 
-    var margin = { top: 60, right: 230, bottom: 50, left: 60 },
+    let margin = { top: 60, right: 230, bottom: 50, left: 60 },
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-    var svg = d3.select("#chart")
+    let svg = d3.select("#chart")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -18,15 +18,15 @@ function updateScatter(data) {
         d['Electric Range'] = +d['Electric Range'];
     });
 
-    var xScale = d3.scaleLinear()
+    let xScale = d3.scaleLinear()
         .domain(d3.extent(data, d => d['Model Year']))
         .range([0, width]);
 
-    var yScale = d3.scaleLinear()
+    let yScale = d3.scaleLinear()
         .domain([0, d3.max(data, d => d['Electric Range'])])
         .range([height, 0]);
 
-    var colorScale = d3.scaleOrdinal()
+    let colorScale = d3.scaleOrdinal()
         .domain(['Battery Electric Vehicle (BEV)', 'Plug-in Hybrid Electric Vehicle (PHEV)'])
         .range(['#1f77b4', '#ff7f0e']);
 

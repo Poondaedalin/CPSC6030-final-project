@@ -1,4 +1,4 @@
-function updateHeatmap(data) {
+function updateHeatmap(data,filtered) {
     // Clear existing content
     d3.select("#chart2").selectAll("*").remove();
 
@@ -12,15 +12,20 @@ function updateHeatmap(data) {
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+
+    let YFeature = filtered? 'Model':'Make'
+
     const avgRangeData = d3.rollup(
         data,
         v => d3.mean(v, d => d['Electric Range']),
         d => d['Model Year'],
-        d => d['Make']
+        d => d[YFeature]
     );
 
     const modelYears = Array.from(new Set(data.map(d => d['Model Year']))).sort((a, b) => a - b);
-    const makes = Array.from(new Set(data.map(d => d['Make']))).sort();
+    const makes = Array.from(new Set(data.map(d => d[YFeature]))).sort();
+
+
 
     const xScale = d3.scaleBand().domain(modelYears).range([0, width]).padding(0.05);
     const yScale = d3.scaleBand().domain(makes).range([0, height]).padding(0.05);

@@ -36,7 +36,7 @@
     
     
     <h2>Scatter Plot</h2>
-    <svg id="chart" width="700" height="500"></svg>
+    <svg id="chart" width="1700" height="1500"></svg>
 
     <h2>Stacked Bar Chart</h2>
     <svg id="chart1" width="700" height="500"></svg>
@@ -58,23 +58,24 @@
                 d3.select("#makeFilter").append("option").text(make).attr("value", make);
             });
 
+            
+            let filtered = false;
 
             d3.select("#makeFilter").on("change", function() {
                 const selectedMake = this.value;
 
-                
                 const filteredData = selectedMake === "All" ? data : data.filter(d => d['Make'] === selectedMake);
-
                 
+                filtered = selectedMake === "All" ? false : true;
                 updateScatter(filteredData);
                 updateStackedBar(filteredData);
-                updateHeatmap(filteredData);
+                updateHeatmap(filteredData,filtered);
             });
 
             
             updateScatter(data);
             updateStackedBar(data);
-            updateHeatmap(data);
+            updateHeatmap(data,filtered);
         });
     </script>
 </body>
