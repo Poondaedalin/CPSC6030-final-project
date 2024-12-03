@@ -1,47 +1,43 @@
-window.sharedData = [];
+function updateScatter(data) {
+    // Clear existing content
+    d3.select("#chart").selectAll("*").remove();
 
-(function() {
     var margin = { top: 60, right: 230, bottom: 50, left: 60 },
-              width = 700 - margin.left - margin.right,
-              height = 500 - margin.top - margin.bottom;
+        width = 700 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
     var svg = d3.select("#chart")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // Load the dataset (replace 'Electric_Vehicle_Population_Data.csv' with your file path)
-    d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
-    
-    window.sharedData = data;
-    console.log(window.sharedData);
-    // Parse data and convert necessary attributes to numbers
+    // Parse and preprocess data
     data.forEach(d => {
         d['Model Year'] = +d['Model Year'];
         d['Electric Range'] = +d['Electric Range'];
     });
 
-    // Define scales
     var xScale = d3.scaleLinear()
-       .domain(d3.extent(data, d => d['Model Year']))
-       .range([0, width]);
+        .domain(d3.extent(data, d => d['Model Year']))
+        .range([0, width]);
 
     var yScale = d3.scaleLinear()
-       .domain([0, d3.max(data, d => d['Electric Range'])])
-       .range([height, 0]);
+        .domain([0, d3.max(data, d => d['Electric Range'])])
+        .range([height, 0]);
 
     var colorScale = d3.scaleOrdinal()
-           .domain(['Battery Electric Vehicle (BEV)', 'Plug-in Hybrid Electric Vehicle (PHEV)'])
-           .range(['#1f77b4', '#ff7f0e']);
+        .domain(['Battery Electric Vehicle (BEV)', 'Plug-in Hybrid Electric Vehicle (PHEV)'])
+        .range(['#1f77b4', '#ff7f0e']);
 
-    // Add X axis
+    // Add axes
     svg.append("g")
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
-    // Add Y axis
     svg.append("g")
         .call(d3.axisLeft(yScale));
+
 
     // Add labels
     svg.append("text")
@@ -86,8 +82,7 @@ window.sharedData = [];
         .attr("width", 10)
         .attr("height", 10)
         .attr("fill", '#ff7f0e');
-
-    // Add circles for each car
+    // Draw circles
     svg.selectAll("circle")
         .data(data)
         .enter()
@@ -122,5 +117,4 @@ window.sharedData = [];
             .attr("r", 5);
             d3.select(".tooltip").remove();
         });
-    });
-})();
+}

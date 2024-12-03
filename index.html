@@ -1,35 +1,81 @@
-
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Forces D3</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Dashboard - Filter by Make</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
         .tooltip {
             position: absolute;
-            background-color: #f9f9f9;
-            padding: 8px;
+            background: white;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 5px;
             pointer-events: none;
-            opacity: 0.9;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
     </style>
-  </head>
-  <body>
-
+</head>
+<body>
     <h1>Electric Vehicle Population Data for Washington State</h1>
 
+   
+    <div class="filter-container">
+        <label for="makeFilter">Filter by Make:</label>
+        <select id="makeFilter">
+            <option value="All">All Makes</option>
+        </select>
+    </div>
 
+    
+    
+    <h2>Scatter Plot</h2>
+    <svg id="chart" width="700" height="500"></svg>
 
-    <svg id="chart"></svg>
-    <svg id="chart1"></svg>
-    <svg id="chart2"></svg>
+    <h2>Stacked Bar Chart</h2>
+    <svg id="chart1" width="700" height="500"></svg>
 
+    <h2>Heatmap</h2>
+    <svg id="chart2" width="1100" height="500"></svg>
 
+    <!-- JavaScript for Visualizations -->
+    <script src="heatmap.js"></script>
     <script src="scatter.js"></script>
     <script src="stackedbar.js"></script>
-    <script src="heatmap.js"></script>
-  </body>
+
+
+    <script>
+        d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
+       
+            const makes = Array.from(new Set(data.map(d => d['Make']))).sort();
+            makes.forEach(make => {
+                d3.select("#makeFilter").append("option").text(make).attr("value", make);
+            });
+
+
+            d3.select("#makeFilter").on("change", function() {
+                const selectedMake = this.value;
+
+                
+                const filteredData = selectedMake === "All" ? data : data.filter(d => d['Make'] === selectedMake);
+
+                
+                updateScatter(filteredData);
+                updateStackedBar(filteredData);
+                updateHeatmap(filteredData);
+            });
+
+            
+            updateScatter(data);
+            updateStackedBar(data);
+            updateHeatmap(data);
+        });
+    </script>
+</body>
 </html>

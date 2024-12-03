@@ -1,19 +1,17 @@
-const margin = { top: 50, right: 330, bottom: 50, left: 100 },
-    width = 1100 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+function updateHeatmap(data) {
+    // Clear existing content
+    d3.select("#chart2").selectAll("*").remove();
 
-// Create an SVG container
-const svg = d3.select("#chart2")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    const margin = { top: 50, right: 330, bottom: 50, left: 100 },
+        width = 1100 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
-// Load the dataset from the global sharedData variable
-d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
-    
+    const svg = d3.select("#chart2")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // Process the data to calculate the average Electric Range for each Make and Model Year
     const avgRangeData = d3.rollup(
         data,
         v => d3.mean(v, d => d['Electric Range']),
@@ -21,42 +19,25 @@ d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
         d => d['Make']
     );
 
-    // Extract unique Model Years and Makes for the axes
     const modelYears = Array.from(new Set(data.map(d => d['Model Year']))).sort((a, b) => a - b);
     const makes = Array.from(new Set(data.map(d => d['Make']))).sort();
 
-    // Define scales
-    const xScale = d3.scaleBand()
-        .domain(modelYears)
-        .range([0, width])
-        .padding(0.05);
-
-    const yScale = d3.scaleBand()
-        .domain(makes)
-        .range([0, height])
-        .padding(0.05);
+    const xScale = d3.scaleBand().domain(modelYears).range([0, width]).padding(0.05);
+    const yScale = d3.scaleBand().domain(makes).range([0, height]).padding(0.05);
 
     const colorScale = d3.scaleSequential()
         .interpolator(d3.interpolateBlues)
         .domain([0, d3.max(data, d => d['Electric Range'])]);
 
-    // Add X axis
-    svg.append("g")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")))
-        .selectAll("text")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
+    svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+    svg.append("g").call(d3.axisLeft(yScale));
 
-    // Add Y axis
-    svg.append("g")
-        .call(d3.axisLeft(yScale));
-
+    
     svg.append("text")
-        .attr("x", 800)
-        .attr("y", 10)
-        .style("text-anchor", "middle")
-        .text("Legend (miles)")
+    .attr("x", 800)
+    .attr("y", 10)
+    .style("text-anchor", "middle")
+    .text("Legend (miles)")
 
     legend_outline = 2
 
@@ -125,4 +106,4 @@ d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
                 });
         });
     });
-});
+}
