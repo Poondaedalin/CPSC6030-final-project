@@ -1,8 +1,8 @@
 window.sharedData = [];
 
 (function() {
-    var margin = { top: 20, right: 30, bottom: 50, left: 60 },
-              width = 500 - margin.left - margin.right,
+    var margin = { top: 60, right: 230, bottom: 50, left: 60 },
+              width = 700 - margin.left - margin.right,
               height = 500 - margin.top - margin.bottom;
     var svg = d3.select("#chart")
         .attr("width", width + margin.left + margin.right)
@@ -46,6 +46,12 @@ window.sharedData = [];
     // Add labels
     svg.append("text")
         .attr("x", width / 2)
+        .attr("y", -30)
+        .style("text-anchor", "middle")
+        .text("Model Year vs. Electric Range for Battery Electric & Hybrid");
+
+    svg.append("text")
+        .attr("x", width / 2)
         .attr("y", height + margin.bottom - 10)
         .style("text-anchor", "middle")
         .text("Model Year");
@@ -56,6 +62,30 @@ window.sharedData = [];
         .attr("x", -height / 2)
         .style("text-anchor", "middle")
         .text("Electric Range (miles)");
+
+    // Add legend for colors
+
+    svg.append("text")
+        .attr("x", 450)
+        .attr("y", 30)
+        .text("Battery");
+    svg.append("rect")
+        .attr("x", 435)
+        .attr("y", 20)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill", '#1f77b4');
+
+    svg.append("text")
+        .attr("x", 450)
+        .attr("y", 50)
+        .text("Hybrid");
+    svg.append("rect")
+        .attr("x", 435)
+        .attr("y", 40)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill", '#ff7f0e');
 
     // Add circles for each car
     svg.selectAll("circle")
@@ -81,7 +111,6 @@ window.sharedData = [];
                .html(`
                    <strong>Make:</strong> ${d['Make']}<br>
                    <strong>Model:</strong> ${d['Model']}<br>
-                   <strong>Model Year:</strong> ${d['Model Year']}<br>
                    <strong>Type:</strong> ${d['Electric Vehicle Type']}<br>
                    <strong>Electric Range:</strong> ${d['Electric Range']} miles
                `);

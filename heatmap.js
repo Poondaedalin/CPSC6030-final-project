@@ -1,5 +1,5 @@
-const margin = { top: 50, right: 30, bottom: 50, left: 100 },
-    width = 800 - margin.left - margin.right,
+const margin = { top: 50, right: 330, bottom: 50, left: 100 },
+    width = 1100 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 // Create an SVG container
@@ -52,6 +52,52 @@ d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
     svg.append("g")
         .call(d3.axisLeft(yScale));
 
+    svg.append("text")
+        .attr("x", 800)
+        .attr("y", 10)
+        .style("text-anchor", "middle")
+        .text("Legend (miles)")
+
+    legend_outline = 2
+
+    svg.append("rect")
+        .attr("x", 700 - legend_outline)
+        .attr("y", 20 - legend_outline)
+        .attr("width", 200 + legend_outline*2)
+        .attr("height", 10 + legend_outline*2)
+        .attr("fill", "#000000");
+
+    for (i=0; i < 10; i++) {
+        value = 10*i
+        svg.append("rect")
+            .attr("x", 700 + 20*i)
+            .attr("y", 20)
+            .attr("width", 20)
+            .attr("height", 10)
+            .attr("fill", colorScale(value));
+
+        console.log(d3.max(data, d => d['Electric Range']))
+    }
+
+    svg.append("text")
+        .attr("x", 710)
+        .attr("y", 50)
+        .style("text-anchor", "middle")
+        .text("0")
+
+    svg.append("text")
+        .attr("x", 890)
+        .attr("y", 50)
+        .style("text-anchor", "middle")
+        .text("290")
+
+    svg.append("text")
+        .attr("x", 800)
+        .attr("y", 50)
+        .style("text-anchor", "middle")
+        .text("145")
+
+
     // Draw the heatmap cells
     modelYears.forEach(year => {
         makes.forEach(make => {
@@ -70,7 +116,6 @@ d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
                         .style("top", `${event.pageY - 20}px`)
                         .html(`
                             <strong>Make:</strong> ${make}<br>
-                            <strong>Model Year:</strong> ${year}<br>
                             <strong>Average Electric Range:</strong> ${avgRange.toFixed(2)} miles
                         `);
                 })

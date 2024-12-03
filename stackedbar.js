@@ -1,7 +1,7 @@
 (function() {
 // Set dimensions and margins
-    const margin = { top: 20, right: 30, bottom: 50, left: 60 },
-    width = 500 - margin.left - margin.right,
+    const margin = { top: 20, right: 230, bottom: 50, left: 60 },
+    width = 700 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
     // Create an SVG container
@@ -69,6 +69,29 @@
         // Add Y axis
         svg.append("g")
             .call(d3.axisLeft(yScale));
+
+        svg.append("text")
+            .attr("x", 450)
+            .attr("y", 30)
+            .text("Battery");
+        svg.append("rect")
+            .attr("x", 435)
+            .attr("y", 20)
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", '#1f77b4');
+
+        svg.append("text")
+            .attr("x", 450)
+            .attr("y", 50)
+            .text("Hybrid");
+        svg.append("rect")
+            .attr("x", 435)
+            .attr("y", 40)
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", '#ff7f0e');
+
 
 
         processedData.forEach(dataPoint => {
