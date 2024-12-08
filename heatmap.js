@@ -94,6 +94,7 @@ function updateHeatmap(data,filtered) {
                 .attr("width", xScale.bandwidth())
                 .attr("height", yScale.bandwidth())
                 .attr("fill", avgRange > 0 ? colorScale(avgRange) : '#f0f0f0')
+                .attr("fill-opacity", avgRange > 0 ? 1 : 0.0) 
                 .on("mouseover", function(event) {
                     d3.select(this).attr("stroke", "black").attr("stroke-width", 2);
                     d3.select("body").append("div")

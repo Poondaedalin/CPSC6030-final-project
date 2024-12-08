@@ -100,7 +100,7 @@ https://poondaedalin.github.io/CPSC6030-final-project/
 - [x] Reorganize/rescale the graph so that it all fits on-screen at the same time (probably do this first)
 
 - [ ] Modify the scatter plot to not show duplicate points (this is causing a lot of lag, especially on the "All Makes" setting)
-- [ ] Reduce the opacity of null values in the heatmap to make the changing values stick out more
+- [x] Reduce the opacity of null values in the heatmap to make the changing values stick out more
 - [ ] Change the color scale for the heatmap to not be orange or blue (I changed it to green on my end and it looks pretty good, so we could try that if y'all want)
 - [ ] Add an onclick listener to the heatmap so that the visualization changes to that make when we click a specific row (instead of a drop-down menu)
   - [ ] To that end, we could also make it so that clicking the heatmap while it's focused on a specific make resets it back to "All Makes"
