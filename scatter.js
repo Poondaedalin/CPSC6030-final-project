@@ -1,6 +1,13 @@
 
 let scatterXScale, scatterYScale;
 
+function randomSample(array, sampleSize) {
+    const shuffled = array.slice().sort(() => 0.5 - Math.random());
+    console.log(shuffled.slice(0, sampleSize).length)
+    return shuffled.slice(0, sampleSize);
+}
+
+
 function initializeScatterScales(data) {
 
     data.forEach(d => {
@@ -16,7 +23,7 @@ function initializeScatterScales(data) {
 }
 
 
-function updateScatter(data) {
+function updateScatter(data,sampleSize = 100) {
     // Clear existing content
     d3.select("#chart").selectAll("*").remove();
 
@@ -43,6 +50,9 @@ function updateScatter(data) {
     // let yScale = d3.scaleLinear()
     //     .domain([0, d3.max(data, d => d['Electric Range'])])
     //     .range([height, 0]);
+
+    // Randomly sample points
+    const sampledData = randomSample(data, sampleSize);
 
     let colorScale = d3.scaleOrdinal()
         .domain(['Battery Electric Vehicle (BEV)', 'Plug-in Hybrid Electric Vehicle (PHEV)'])
@@ -110,7 +120,7 @@ function updateScatter(data) {
         .attr("fill", '#ff7f0e');
     // Draw circles
     svg.selectAll("circle")
-        .data(data)
+        .data(sampledData)
         .enter()
         .append("circle")
         // .attr("cx", d => xScale(d['Model Year']))
@@ -146,4 +156,11 @@ function updateScatter(data) {
             .attr("r", 5);
             d3.select(".tooltip").remove();
         });
+
+        // Attach slider listener to control sample size
+    d3.select("#sampleSize").on("input", function () {
+        const sampleSize = +this.value;
+        d3.select("#sampleSizeValue").text(sampleSize); // Update displayed value
+        updateScatter(data, sampleSize); // Re-render scatter plot with new sample size
+    });
 }

@@ -33,6 +33,12 @@
         </select>
     </div>
 
+
+    <div class="filter-container">
+        <label for="sampleSize">Sample Size:</label>
+        <input type="range" id="sampleSize" min="0" step="100">
+        <span id="sampleSizeValue">100</span>
+    </div>
     
     
 
@@ -51,7 +57,9 @@
 
     <script>
         d3.csv("Electric_Vehicle_Population_Data.csv").then(data => {
-       
+            const totalPoints = data.length;
+            d3.select("#sampleSize").attr("max", totalPoints);
+            d3.select("#sampleSize").attr("value", Math.min(1000, totalPoints)); // Default sample size
             const makes = Array.from(new Set(data.map(d => d['Make']))).sort();
             makes.forEach(make => {
                 d3.select("#makeFilter").append("option").text(make).attr("value", make);
@@ -59,6 +67,8 @@
 
             initializeScatterScales(data);
             let filtered = false;
+            
+            let selectedMake = null; // Tracks the currently selected make
 
             d3.select("#makeFilter").on("change", function() {
                 const selectedMake = this.value;
