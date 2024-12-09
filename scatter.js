@@ -1,3 +1,21 @@
+
+let scatterXScale, scatterYScale;
+
+function initializeScatterScales(data) {
+
+    data.forEach(d => {
+        d['Model Year'] = +d['Model Year'];
+        d['Electric Range'] = +d['Electric Range'];
+    });
+
+    const xDomain = d3.extent(data, d => d['Model Year']); 
+    const yDomain = [0, d3.max(data, d => d['Electric Range'])]; 
+   
+    scatterXScale = d3.scaleLinear().domain(xDomain).range([0, 700 - 60 - 230]);
+    scatterYScale = d3.scaleLinear().domain(yDomain).range([500 - 60 - 50, 0]);
+}
+
+
 function updateScatter(data) {
     // Clear existing content
     d3.select("#chart").selectAll("*").remove();
@@ -18,25 +36,33 @@ function updateScatter(data) {
         d['Electric Range'] = +d['Electric Range'];
     });
 
-    let xScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d['Model Year']))
-        .range([0, width]);
+    // let xScale = d3.scaleLinear()
+    //     .domain(d3.extent(data, d => d['Model Year']))
+    //     .range([0, width]);
 
-    let yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d['Electric Range'])])
-        .range([height, 0]);
+    // let yScale = d3.scaleLinear()
+    //     .domain([0, d3.max(data, d => d['Electric Range'])])
+    //     .range([height, 0]);
 
     let colorScale = d3.scaleOrdinal()
         .domain(['Battery Electric Vehicle (BEV)', 'Plug-in Hybrid Electric Vehicle (PHEV)'])
         .range(['#1f77b4', '#ff7f0e']);
 
-    // Add axes
-    svg.append("g")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+
+
+    // // Add axes
+    // svg.append("g")
+    //     .attr("transform", `translate(0, ${height})`)
+    //     .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+
+    // svg.append("g")
+    //     .call(d3.axisLeft(yScale));
 
     svg.append("g")
-        .call(d3.axisLeft(yScale));
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(scatterXScale).tickFormat(d3.format("d")));
+
+    svg.append("g").call(d3.axisLeft(scatterYScale));  
 
 
     // Add labels
@@ -87,8 +113,11 @@ function updateScatter(data) {
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", d => xScale(d['Model Year']))
-        .attr("cy", d => yScale(d['Electric Range']))
+        // .attr("cx", d => xScale(d['Model Year']))
+        // .attr("cy", d => yScale(d['Electric Range']))
+        .attr("cx", d => scatterXScale(d['Model Year']))
+        .attr("cy", d => scatterYScale(d['Electric Range']))
+
         .attr("r", 4)
         .attr("fill", d => colorScale(d['Electric Vehicle Type']))
         .attr("opacity", 0.7)

@@ -104,5 +104,5 @@ https://poondaedalin.github.io/CPSC6030-final-project/
 - [ ] Change the color scale for the heatmap to not be orange or blue (I changed it to green on my end and it looks pretty good, so we could try that if y'all want)
 - [ ] Add an onclick listener to the heatmap so that the visualization changes to that make when we click a specific row (instead of a drop-down menu)
   - [ ] To that end, we could also make it so that clicking the heatmap while it's focused on a specific make resets it back to "All Makes"
-- [ ] Modify the process for setting the "Make" so that the X and Y scale doesn't change (Prof. F seemed pretty insistent on this point)
+- [x] Modify the process for setting the "Make" so that the X and Y scale doesn't change (Prof. F seemed pretty insistent on this point)
 - [ ] Add titles to the other two graphs (this is on me, I forgot to add title text when I was changing the visualization earlier)

@@ -1,3 +1,5 @@
+
+
 function updateHeatmap(data,filtered) {
     // Clear existing content
     d3.select("#chart2").selectAll("*").remove();

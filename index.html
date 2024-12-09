@@ -57,7 +57,7 @@
                 d3.select("#makeFilter").append("option").text(make).attr("value", make);
             });
 
-            
+            initializeScatterScales(data);
             let filtered = false;
 
             d3.select("#makeFilter").on("change", function() {
