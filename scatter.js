@@ -132,6 +132,7 @@ function updateScatter(data,sampleSize = 100) {
         .attr("fill", d => colorScale(d['Electric Vehicle Type']))
         .attr("opacity", 0.7)
         .on("mouseover", function(event, d) {
+            d3.select(".tooltip").remove();
             d3.select(this)
                 .attr("fill", "orange")
                 .attr("r", 8);

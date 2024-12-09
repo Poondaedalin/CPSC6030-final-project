@@ -4,9 +4,9 @@ function updateHeatmap(data,filtered) {
     // Clear existing content
     d3.select("#chart2").selectAll("*").remove();
 
-    const margin = { top: 50, right: 330, bottom: 50, left: 100 },
+    const margin = { top: 90, right: 330, bottom: 50, left: 100 },
         width = 1100 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        height = 540 - margin.top - margin.bottom;
 
     const svg = d3.select("#chart2")
         .attr("width", width + margin.left + margin.right)
@@ -33,7 +33,7 @@ function updateHeatmap(data,filtered) {
     const yScale = d3.scaleBand().domain(makes).range([0, height]).padding(0.05);
 
     const colorScale = d3.scaleSequential()
-        .interpolator(d3.interpolateBlues)
+        .interpolator(d3.interpolateGreens)
         .domain([0, d3.max(data, d => d['Electric Range'])]);
 
     svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
@@ -45,7 +45,6 @@ function updateHeatmap(data,filtered) {
     .attr("y", 10)
     .style("text-anchor", "middle")
     .text("Legend (miles)")
-
     legend_outline = 2
 
     svg.append("rect")
@@ -56,7 +55,7 @@ function updateHeatmap(data,filtered) {
         .attr("fill", "#000000");
 
     for (i=0; i < 10; i++) {
-        value = 10*i
+        value = d3.max(data, d => d['Electric Range'])*i/10
         svg.append("rect")
             .attr("x", 700 + 20*i)
             .attr("y", 20)
@@ -64,7 +63,7 @@ function updateHeatmap(data,filtered) {
             .attr("height", 10)
             .attr("fill", colorScale(value));
 
-        console.log(d3.max(data, d => d['Electric Range']))
+        // console.log(d3.max(data, d => d['Electric Range']))
     }
 
     svg.append("text")
@@ -84,6 +83,12 @@ function updateHeatmap(data,filtered) {
         .attr("y", 50)
         .style("text-anchor", "middle")
         .text("145")
+
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -30)
+        .style("text-anchor", "middle")
+        .text("Average Electric Range of Different Makes by Year");
 
 
     // Draw the heatmap cells

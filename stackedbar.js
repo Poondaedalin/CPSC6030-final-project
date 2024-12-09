@@ -2,7 +2,7 @@ function updateStackedBar(data) {
     // Clear existing content
     d3.select("#chart1").selectAll("*").remove();
 
-    const margin = { top: 20, right: 230, bottom: 50, left: 60 },
+    const margin = { top: 60, right: 230, bottom: 50, left: 60 },
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -72,6 +72,12 @@ function updateStackedBar(data) {
             .attr("width", 10)
             .attr("height", 10)
             .attr("fill", '#ff7f0e');
+        
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", -30)
+            .style("text-anchor", "middle")
+            .text("Aggregate Count of Hybrid vs. Full Electric Vehicles by Year");
             
         processedData.forEach(dataPoint => {
             const yearGroup = svg.append("g")
@@ -90,6 +96,7 @@ function updateStackedBar(data) {
                     .attr("height", barHeight)
                     .attr("fill", colorScale(typeData.type))
                     .on("mouseover", function(event) {
+                        d3.select(".tooltip").remove();
                         d3.select(this).attr("opacity", 0.8);
                         d3.select("body").append("div")
                             .attr("class", "tooltip")
